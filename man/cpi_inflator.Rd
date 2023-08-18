@@ -2,6 +2,12 @@
 % Please edit documentation in R/cpi_inflator.R
 \name{cpi_inflator}
 \alias{cpi_inflator}
+\alias{cpi_seasonal}
+\alias{cpi_original}
+\alias{cpi_trimmed_mean}
+\alias{cpi_monthly_original}
+\alias{cpi_monthly_seasonal}
+\alias{cpi_monthly_excl_volatile}
 \title{CPI inflator}
 \usage{
 cpi_inflator(
@@ -14,6 +20,18 @@ cpi_inflator(
   check = 1L,
   nThread = getOption("grattanInflators.nThread", 1L)
 )
+
+cpi_seasonal(..., FORECAST = FALSE, LEVEL = "mean")
+
+cpi_original(..., FORECAST = FALSE, LEVEL = "mean")
+
+cpi_trimmed_mean(..., FORECAST = FALSE, LEVEL = "mean")
+
+cpi_monthly_original(..., FORECAST = FALSE, LEVEL = "mean")
+
+cpi_monthly_seasonal(..., FORECAST = FALSE, LEVEL = "mean")
+
+cpi_monthly_excl_volatile(..., FORECAST = FALSE, LEVEL = "mean")
 }
 \arguments{
 \item{from, to}{Times for which the inflator is desired. If \code{NULL}, a date
@@ -36,6 +54,14 @@ clearly invalid inputs result in \code{NA} in the output. If \code{check = 1L}
 an error is performed for bad input; \code{check = 2L} is more thorough.}
 
 \item{nThread}{Number of threads to use.}
+
+\item{...}{Set of date-rate pairs for custom CPI series in the future.}
+
+\item{FORECAST}{Whether the series should be extended via an ETS forecast.}
+
+\item{LEVEL}{If `FORECAST = TRUE` what prediction interval should be used.
+(`LEVEL = 20` means the lower end of an 80\% prediction interval.) If `LEVEL = "mean"`
+(the default), the central estimate is used.}
 }
 \value{
 If `x` is `NULL`, the default, a numeric vector matching the lengths of `from`
@@ -49,7 +75,18 @@ is `x` in `to` real terms.
 CPI inflator
 }
 \examples{
+cpi_inflator(1995, 2023)  # Inflation from 1995 to 2023
 cpi_inflator("2015-16", "2016-17")
 cpi_inflator("2015-01-01", "2016-01-01")
+
+if (Sys.Date() < as.Date("2029-01-01")) {
+  cpi_inflator("2030-01-01", "2031-01-01",
+               series = cpi_original(2030, 0.1))
+  cpi_inflator("2030-01-01", "2031-01-01",
+               series = cpi_original(0.1))
+  cpi_inflator("2030-01-01", "2032-01-01",
+               series = cpi_original(2030, 0.1, 2031, 0.1, 2032, 0))
+}
+
 
 }

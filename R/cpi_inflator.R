@@ -20,9 +20,26 @@
 #'
 #' @param nThread Number of threads to use.
 #'
+#' @param ... Set of date-rate pairs for custom CPI series in the future.
+#' @param FORECAST Whether the series should be extended via an ETS forecast.
+#' @param LEVEL If `FORECAST = TRUE` what prediction interval should be used.
+#' (`LEVEL = 20` means the lower end of an 80\% prediction interval.) If `LEVEL = "mean"`
+#' (the default), the central estimate is used.
+#'
 #' @examples
+#' cpi_inflator(1995, 2023)  # Inflation from 1995 to 2023
 #' cpi_inflator("2015-16", "2016-17")
 #' cpi_inflator("2015-01-01", "2016-01-01")
+#'
+#' if (Sys.Date() < as.Date("2029-01-01")) {
+#'   cpi_inflator("2030-01-01", "2031-01-01",
+#'                series = cpi_original(2030, 0.1))
+#'   cpi_inflator("2030-01-01", "2031-01-01",
+#'                series = cpi_original(0.1))
+#'   cpi_inflator("2030-01-01", "2032-01-01",
+#'                series = cpi_original(2030, 0.1, 2031, 0.1, 2032, 0))
+#' }
+#'
 #'
 #' @return
 #' If `x` is `NULL`, the default, a numeric vector matching the lengths of `from`
@@ -41,8 +58,14 @@ cpi_inflator <- function(from = NULL, to = NULL,
                          x = NULL,
                          check = 1L,
                          nThread = getOption("grattanInflators.nThread", 1L)) {
-  series <- match.arg(series)
-  Index <- GET_SERIES(cpi2series_id(series))
+  if (missing(series) || is.character(series)) {
+    series <- match.arg(series)
+    Index <- GET_SERIES(cpi2series_id(series))
+  } else {
+    Index <- copy(series)
+  }
+
+
   Inflate(from, to, Index, fy_month = fy_month, x = x,
           check = check,
           nThread = nThread)
@@ -119,6 +142,74 @@ cpi_inflator2 <- function(from, to) {
 }
 # nocov end
 
+cpi_custom <- function(series, ..., FORECAST = FALSE, LEVEL = "mean") {
+  Index <- GET_SERIES(cpi2series_id(series))
+  if (missing(..1)) {
+    if (isTRUE(FORECAST)) {
+      return(.prolong_ets(Index, level = LEVEL))
+    }
+    return(Index)
+  }
+  if (...length() %% 2L) {
+    if (...length() == 1L) {
+      return(.prolong_annual_r(Index, ...))
+    }
+    return(r2index(Index, ...))
+    # NewIndex <-
+  } else {
+    return(dr2index(Index, ...))
+  }
+}
 
+#' @rdname cpi_inflator
+#' @export
+cpi_seasonal <- function(..., FORECAST = FALSE, LEVEL = "mean") {
+  cpi_custom("seasonal", ..., FORECAST = FORECAST, LEVEL = LEVEL)
+}
 
+#' @rdname cpi_inflator
+#' @export
+cpi_original <- function(..., FORECAST = FALSE, LEVEL = "mean") {
+  cpi_custom("original", ...)
+}
 
+#' @rdname cpi_inflator
+#' @export
+cpi_trimmed_mean <- function(..., FORECAST = FALSE, LEVEL = "mean") {
+  cpi_custom("trimmed.mean", ...)
+}
+
+#' @rdname cpi_inflator
+#' @export
+cpi_monthly_original <- function(..., FORECAST = FALSE, LEVEL = "mean") {
+  cpi_custom("monthly-original", ...)
+}
+
+#' @rdname cpi_inflator
+#' @export
+cpi_monthly_seasonal <- function(..., FORECAST = FALSE, LEVEL = "mean") {
+  cpi_custom("monthly-seasonal", ...)
+}
+
+#' @rdname cpi_inflator
+#' @export
+cpi_monthly_excl_volatile <- function(..., FORECAST = FALSE, LEVEL = "mean") {
+  cpi_custom("monthly-excl-volatile", ...)
+}
+
+cpi_seasonal_fy <- function(...) {
+  Index <- GET_SERIES_FY(cpi2series_id("seasonal"))
+  if (missing(..1)) {
+    return(Index)
+  }
+
+  if (...length() %% 2L) {
+    if (...length() == 1L) {
+      return(.prolong_annual_r(Index, ...))
+    }
+    return(r2index(Index, ...))
+    # NewIndex <-
+  } else {
+    return(dr2index(Index, ...))
+  }
+}
