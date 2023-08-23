@@ -1,6 +1,6 @@
 Package: grattanInflators
 Title: Inflators for Australian Policy Analysis
-Version: 0.4.0
+Version: 0.4.2
 Authors@R: 
     person(given = "Hugh",
            family = "Parsonage",
@@ -16,8 +16,8 @@ Imports: data.table, fy, hutils, tools, utils
 RoxygenNote: 7.2.0
 Suggests: distributional, fable, fabletools, tinytest, withr
 NeedsCompilation: yes
-Packaged: 2023-08-18 06:48:41 UTC; hughp
+Packaged: 2023-08-23 09:24:17 UTC; hughp
 Author: Hugh Parsonage [aut, cre]
 Maintainer: Hugh Parsonage <hugh.parsonage@gmail.com>
 Repository: CRAN
-Date/Publication: 2023-08-18 07:12:32 UTC
+Date/Publication: 2023-08-23 15:50:17 UTC

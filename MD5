@@ -1,14 +1,14 @@
-3d98a040231ce5236166729810c16e31 *DESCRIPTION
+952b2eccc0d5395f45608fba442b0d9f *DESCRIPTION
 cbf3aa9e19eeb84176114a684d53161e *NAMESPACE
-331d551ceed88ae05fbc57602c68fb3c *NEWS.md
-25eb3720906acc1c215bbbf52a32729f *R/Inflate.R
+a8ccba0c9808adf2b085844a6288a055 *NEWS.md
+6ac7b038bf12ee375d885202c35f12b3 *R/Inflate.R
 a7e471d78a2d2612e224343b7642b36d *R/YearMonthSplit.R
 2c962fb1e23dc72dfba0371b3ea6f4a6 *R/all_Y2k.R
 f038f605072f1a33f9b4061d21fd0273 *R/check_input.R
-a63673984385ff229f7d1e217b7b812a *R/cpi_inflator.R
+c187ad6decaac787ac5a056b3e4a600c *R/cpi_inflator.R
 c63091a4bcec481af4e479364436303d *R/custom-series.R
 c507ceb9f44d984df8f67c7a245c31d3 *R/download_data.R
-8b7afd244dc2a86b54d80995efbeea87 *R/envir.R
+a8363612576399cb976d7814bb4dd291 *R/envir.R
 8826e4c95839ce9688e4bed8cc0e7eff *R/fast_as_idate.R
 092316677e08b17f6025753b528f2800 *R/grattanInflators-package.R
 1432ef63c83b2587e21bb19015aab655 *R/lf_inflator.R
@@ -39,7 +39,7 @@ adc329d90d60d9dbd4c57011ae3cf52e *inst/tinytest/test_inflator_annual.R
 ae8f1413c616221b4013054d3fd27f44 *inst/tinytest/test_wage_inflator.R
 4b1c91407366bc51d1d1f433cc30a018 *man/Inflate.Rd
 05dc9741be37419cd3df1501cd6f2853 *man/abs-conn.Rd
-557a803a4adf8eb3431d546fe03b9b0f *man/cpi_inflator.Rd
+fa6574cbb3b9db7da3cdc796d6bca506 *man/cpi_inflator.Rd
 6594163442f64cd49d1ca7645914c464 *man/custom-series.Rd
 c7688697ea57cf4669cddbeaafdb9f61 *man/fast_as_idate.Rd
 717d977e8858f815ef9fc125ad0bb9c2 *man/grattanInflators-package.Rd
@@ -59,4 +59,4 @@ c6dfad22f4ace08a686141a253dbb793 *src/idate_YearMonth.c
 3918ceac2704ca01e61faa764dda83eb *src/init.c
 8c2fb870af3fddd11dac8aab0cdcd02c *src/minmaxDate.c
 4cb75bc7961798e2a574efd62d8cfdbb *src/omp_diagnose.c
-e9a3412d28ecd9a38a032d9563631574 *tests/tinytest.R
+f10dfaf31412d7321ff9d60fcdbeac2a *tests/tinytest.R
