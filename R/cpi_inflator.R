@@ -65,10 +65,25 @@ cpi_inflator <- function(from = NULL, to = NULL,
     Index <- copy(series)
   }
 
-
-  Inflate(from, to, Index, fy_month = fy_month, x = x,
-          check = check,
-          nThread = nThread)
+  sys_call <- deparse(sys.call())
+  ans <- NULL
+  withCallingHandlers({
+    ans <-
+      Inflate(from, to, Index,
+              fy_month = fy_month, x = x,
+              check = check,
+              nThread = nThread)
+  },
+  error = function(e) {
+    stop(sys_call, ": ", e$message, call. = FALSE)
+  },
+  warning = function(e) {
+    warning(sys_call, ": ", e$message, call. = FALSE)
+  },
+  message = function(e) {
+    message(sys_call, ": ", e$message)
+  })
+  ans
 }
 
 cpi2series_id <- function(series, use_monthly) {
@@ -170,31 +185,31 @@ cpi_seasonal <- function(..., FORECAST = FALSE, LEVEL = "mean") {
 #' @rdname cpi_inflator
 #' @export
 cpi_original <- function(..., FORECAST = FALSE, LEVEL = "mean") {
-  cpi_custom("original", ...)
+  cpi_custom("original", ..., FORECAST = FORECAST, LEVEL = LEVEL)
 }
 
 #' @rdname cpi_inflator
 #' @export
 cpi_trimmed_mean <- function(..., FORECAST = FALSE, LEVEL = "mean") {
-  cpi_custom("trimmed.mean", ...)
+  cpi_custom("trimmed.mean", ..., FORECAST = FORECAST, LEVEL = LEVEL)
 }
 
 #' @rdname cpi_inflator
 #' @export
 cpi_monthly_original <- function(..., FORECAST = FALSE, LEVEL = "mean") {
-  cpi_custom("monthly-original", ...)
+  cpi_custom("monthly-original", ..., FORECAST = FORECAST, LEVEL = LEVEL)
 }
 
 #' @rdname cpi_inflator
 #' @export
 cpi_monthly_seasonal <- function(..., FORECAST = FALSE, LEVEL = "mean") {
-  cpi_custom("monthly-seasonal", ...)
+  cpi_custom("monthly-seasonal", ..., FORECAST = FORECAST, LEVEL = LEVEL)
 }
 
 #' @rdname cpi_inflator
 #' @export
 cpi_monthly_excl_volatile <- function(..., FORECAST = FALSE, LEVEL = "mean") {
-  cpi_custom("monthly-excl-volatile", ...)
+  cpi_custom("monthly-excl-volatile", ..., FORECAST = FORECAST, LEVEL = LEVEL)
 }
 
 cpi_seasonal_fy <- function(...) {
