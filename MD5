@@ -1,6 +1,6 @@
-8e9ec78c0ed16f7643eeaaf8a00eaabe *DESCRIPTION
+8fa1104446756fb02b85bfd808da7cfa *DESCRIPTION
 cbf3aa9e19eeb84176114a684d53161e *NAMESPACE
-2ec9c5e1be7b49ca28c5f1ca37c771a1 *NEWS.md
+facfd88fa813bdcd4f3cf2216cfcb29f *NEWS.md
 21c0ca5ae676de071ed38903d5413b3d *R/Inflate.R
 fb73fb06bb2fcb45617ff06ead36b797 *R/YearMonthSplit.R
 2c962fb1e23dc72dfba0371b3ea6f4a6 *R/all_Y2k.R
@@ -49,14 +49,14 @@ f707184dddbbfc3bd359b16b35f56d63 *man/wage_inflator.Rd
 7f1d4004bc8e455f5938a2fe548835b4 *src/C_YearMonthSplit.c
 6e2f242c8b51441ef135847d715219fe *src/C_multiply.c
 d40b118333be5678e2c45b03acc49b41 *src/Makevars
-ea1adcb80402156b6fd668136f52dee0 *src/SEXP2YearMonth.c
-4fa56b6b3f148f219548e2ef4c2fb198 *src/check_input.c
+3b35d3e68de5571d4d038ff970c65447 *src/SEXP2YearMonth.c
+e8760ae17c57056ada0337ffa6b75efa *src/check_input.c
 585d30cd6f186647bcc3ffdc3cfe0c38 *src/cpi.c
 944354dd80e3e47dba075db8922d85bb *src/errif.c
 2bdad3602907537f4662ff7af47f8d86 *src/grattanInflator.h
-ee884b2bd20894a3f2010ca59021608b *src/idate_YearMonth.c
+f0d3df363bfeaf12b7ad08f324d662d6 *src/idate_YearMonth.c
 7f46633f9607fbb0b54d82e31572a3d0 *src/inflate.c
 a9e3fce0ad7317c63cc75e687d14513b *src/init.c
-06ab68ed8a57d496ac8c369ef1714c20 *src/minmaxDate.c
+aaa5e8171c0f9703cdd536c2c93726e3 *src/minmaxDate.c
 4cb75bc7961798e2a574efd62d8cfdbb *src/omp_diagnose.c
 f10dfaf31412d7321ff9d60fcdbeac2a *tests/tinytest.R
