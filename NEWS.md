@@ -1,3 +1,20 @@
+## grattanInflators 0.5.7
+
+* Bug fix:
+  - Forecast defaults no longer exceed the permissible date range
+
+## grattanInflators 0.5.6
+
+* Bug fix:
+  - `fast_as_idate(x, format = "%d/%m/%Y")` now works with nchar(x) != 10, 
+    e.g. "1/1/2000"
+
+## grattanInflators 0.5.5
+
+* Internal
+  - Checking can occur without error in the absence of an internet connection
+    (though the tests will be perfunctory)
+
 ## grattanInflators 0.5.4
 
 * Internal

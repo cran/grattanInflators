@@ -51,13 +51,20 @@ Inflate <- function(from, to,
   from <- ensure_date(from)
   to <- ensure_date(to)
 
+  # nocov start
+  if (!is.data.table(index) || !nrow(index)) {
+    message("Index had zero rows, possibly due to a faulty download, so returning NULL.")
+    return(NULL)
+  }
+  # nocov end
+
   index_dates <- as.IDate(.subset2(index, "date"))
   minDate <- index_dates[1L]
   maxDate <- index_dates[length(index_dates)]
-  if (is.na(minDate) || !inherits(minDate, "IDate") || minDate < "1948-01-01" || minDate > "2075-12-31") {
+  if (is.na(minDate) || !inherits(minDate, "IDate") || minDate < MIN_DATE || minDate > MAX_DATE) {
     stop("index[1] = ", as.character(minDate), " but the only supported dates are between 1948 and 2075")
   }
-  if (is.na(maxDate) || !inherits(maxDate, "IDate") || maxDate < "1948-01-01" || maxDate > "2075-12-31") {
+  if (is.na(maxDate) || !inherits(maxDate, "IDate") || maxDate < MIN_DATE || maxDate > MAX_DATE) {
     stop("index[1] = ", as.character(maxDate), " but the only supported dates are between 1948 and 2075")
   }
 
@@ -130,21 +137,21 @@ Inflate <- function(from, to,
     yrs <- year(until) - year(last(index_dates))
     new_value <- last(index_values) * r^(seq_len(yrs + 1))
     new_dates <- seq(last(index_dates), by = "1 year", length.out = yrs + 2)
-    return(rbind(index, data.table(date = new_dates, value = new_value)))
+    return(rbind(index, data.table(date = new_dates, value = new_value))[date <= MAX_DATE])
   }
   if (freq == 4) {
     r <- last(index_values) / index_values[length(index_values) - 4]
     yrs <- 4 * (year(until) - year(last(index_dates)))
     new_value <- last(index_values) * r^((seq_len(yrs + 4)) / 4)
     new_dates <- seq(last(index_dates), by = "3 months", length.out = yrs + 5)[-1]
-    return(rbind(index, data.table(date = new_dates, value = new_value)))
+    return(rbind(index, data.table(date = new_dates, value = new_value))[date <= MAX_DATE])
   }
   if (freq == 12) {
     r <- last(index_values) / index_values[length(index_values) - 12]
     yrs <- 4 * (year(until) - year(last(index_dates)))
     new_value <- last(index_values) * r^((seq_len(yrs + 4)) / 4)
     new_dates <- seq(last(index_dates), by = "3 months", length.out = yrs + 5)[-1]
-    return(rbind(index, data.table(date = new_dates, value = new_value)))
+    return(rbind(index, data.table(date = new_dates, value = new_value))[date <= MAX_DATE])
   }
 
 }
@@ -196,11 +203,15 @@ Inflate <- function(from, to,
 
   pow <- seq_along(new_dates) / date2freq(index_dates)
 
-  rbind(index,
-        data.table(date = new_dates,
-                   value = last(.subset2(index, "value")) * (1 + r) ^ pow))
+  ans <-
+    rbind(index,
+          data.table(date = new_dates,
+                     value = last(.subset2(index, "value")) * (1 + r) ^ pow))
+  ans[date %between% c(MIN_DATE, MAX_DATE)]
 }
 
+MIN_DATE <- as.IDate("1948-01-01")
+MAX_DATE <- as.IDate("2075-12-31")
 
 
 
